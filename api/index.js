@@ -17,7 +17,12 @@ require('dotenv').config();
 const app = express();
 
 const bcryptSalt = bcrypt.genSaltSync(10);
-const jwtSecret = 'fasefraw4r5r3wq45wdfgw34twdfg';
+// Secret that signs login tokens. It must come from the environment (api/.env locally, the project's
+// environment variables on Vercel): anyone who knows it can forge a login as any user.
+const jwtSecret = process.env.JWT_SECRET;
+if (!jwtSecret) {
+  throw new Error('JWT_SECRET is not set: add it to api/.env (see README)');
+}
 const bucket = 'akshay-booking-app';
 
 app.use(express.json());
